@@ -14,6 +14,8 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Sort;
 
 /**
@@ -73,6 +75,18 @@ public abstract class CRUDService<E extends BaseEntity, PK extends Serializable,
 
     public Stream<V> findAllVOSorted(Comparator<V> comparator) {
         return this.findAllVO().sorted(comparator);
+    }
+
+    public <E extends BaseEntity> E findOneOrReturnNull(E exampleObject, String[] properties) throws IllegalAccessException, InstantiationException {
+        ExampleMatcher matcher = ExampleMatcher.matching();
+        for(int i = 0; i< properties.length;i++){
+            matcher.withMatcher(properties[i], ExampleMatcher.GenericPropertyMatchers.exact());
+        }
+        Example<E> example = Example.<E>of(exampleObject, matcher);
+        BaseDAO<E, PK> dynamicDao = (BaseDAO<E, PK>) this.dao();
+        if (!dynamicDao.repository().exists(example))
+            return null;
+        return dynamicDao.repository().findOne(example).get();
     }
 
     public E findOne(PK id) {

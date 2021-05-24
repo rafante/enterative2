@@ -4,6 +4,8 @@ import java.time.Duration;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import br.com.chart.enterative.dao.EnvParameterDAO;
+import br.com.chart.enterative.enums.ENVIRONMENT_PARAMETER;
 import br.com.chart.enterative.web.config.LocalDev;
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
@@ -48,13 +50,19 @@ public class BootstrapApplication implements SchedulingConfigurer {
     @Autowired
     private LocalDev localDev;
 
+    @Autowired
+    private EnvParameterDAO parameterDAO;
+
     @PostConstruct
     public void init() {
         String fullArgs = String.join(" ", _args);
+        //parameterDAO.initializeEnvVariables();
         if (StringUtils.contains(fullArgs, "-localdev")) {
             localDev.initLocalDev();
         }
     }
+
+
 
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {

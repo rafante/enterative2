@@ -184,7 +184,7 @@
         <table class="mdl-data-table enterative-layout__block--align-center enterative-layout-table--center-content">
             <thead>
                 <tr>
-                    <th th:text="#{base.product}" class="enterative-layout-list--divider-right enterative-layout-list--divider-bottom"></th>
+                    <th th:text="#{base.product}" colspan="2" class="enterative-layout-list--divider-right enterative-layout-list--divider-bottom"></th>
                     <th th:text="#{base.qty}" class="enterative-layout-list--divider-bottom"></th>
                     <th th:text="#{base.amount}" class="enterative-layout-list--divider-bottom"></th>
                     <th th:text="#{base.chart}" class="enterative-layout-list--divider-bottom"></th>
@@ -195,6 +195,7 @@
             <tbody th:if="${objectList.length > 0}">
                 <th:block th:each="obj : ${objectList}">
                     <tr>
+                        <td th:text="${obj.product.ean}"></td>
                         <td th:text="${obj.product.displayName}" class="enterative-layout-list--divider-right"></td>
                         <td th:text="${obj.quantity}"></td>
                         <td th:text="${#numbers.formatDecimal(obj.amount, 0, 'POINT', 2, 'COMMA')}"></td>
@@ -204,7 +205,7 @@
                     </tr>
                 </th:block>
                 <tr>
-                    <th class="enterative-layout-list--divider-right enterative-layout-list--divider-top" th:text="#{base.totals}"></th>
+                    <th class="enterative-layout-list--divider-right enterative-layout-list--divider-top" colspan="2" th:text="#{base.totals}"></th>
                     <td class="enterative-layout-list--divider-top" th:text="${#aggregates.sum(objectList.![quantity])}"></td>
                     <td class="enterative-layout-list--divider-top" th:text="${#numbers.formatDecimal(#aggregates.sum(objectList.![amount]), 0, 'POINT', 2, 'COMMA')}"></td>
                     <td class="enterative-layout-list--divider-top" th:text="${#numbers.formatDecimal(#aggregates.sum(objectList.![chartCommission]), 0, 'POINT', 2, 'COMMA')}"></td>

@@ -73,7 +73,8 @@ public enum ENVIRONMENT_PARAMETER {
     SMS_APIKEY("SMS_APIKEY", "Nexmo API Key", String.class, "a1e17a4d"),
     SMS_APISECRET("SMS_APISECRET", "Nexmo API Secret", String.class, "vMAl7vv4tFssgHBH"),
     CUSTOMER_FORGOTPASSWORD_LINK("CUSTOMER_FORGOTPASSWORD_LINK", "Link para redefinição de senha", String.class, "https://enterativeapk.tk/enterative/user/forgotpassword"),
-    SHOP_TRANSACTION_CATEGORY_REFUND("SHOP_TRANSACTION_CATEGORY_REFUND", "ID da categoria para transações de conta [Refund]", Long.class, 4L);
+    SHOP_TRANSACTION_CATEGORY_REFUND("SHOP_TRANSACTION_CATEGORY_REFUND", "ID da categoria para transações de conta [Refund]", Long.class, 4L),
+    MAX_ITEM_PURCHASE_UNITS("MAX_ITEM_PURCHASE_UNITS", "Quantidade máxima de itens", Integer.class, 50);
     
     @Getter private final String name;
     @Getter private final String description;

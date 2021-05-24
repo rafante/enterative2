@@ -30,6 +30,7 @@ public class SegurancaConfig extends WebSecurityConfigurerAdapter {
                 USER_ROLE.ROLE_ENTERATIVE_CREDIT.getRole(),
                 USER_ROLE.ROLE_CUSTOMER.getRole(),
                 USER_ROLE.ROLE_FAST_ACTIVATION.getRole())
+                .antMatchers("/paygoIntegrator/**").hasRole(USER_ROLE.ROLE_PAYGO_INTEGRATOR.getRole())
                 .and().httpBasic();
 
         http.csrf().disable();

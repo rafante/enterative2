@@ -12,6 +12,10 @@ function toggleAddLine() {
     }
 }
 
+function performActionAndDisable(element){
+    element.setAttribute('style','pointer-events: none;');
+}
+
 function removeLine(link) {
     var id = link.id.replace('aRemoveLine_', '');
     $('#hname_' + id).val("REMOVE");

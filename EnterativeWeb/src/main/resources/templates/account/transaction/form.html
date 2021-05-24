@@ -131,10 +131,15 @@
                     <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
                         <th:block th:text="#{base.saleorderline}" />
                     </div>                    
-                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label enterative-form__field-readonly">
+                    <div th:if="${saveActionPath eq null}" class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label enterative-form__field-readonly">
                         <a th:href="@{/user/saleorder/edit/{id}(id=${activeObject.saleOrderNumber})}" th:if="${activeObject.saleOrderNumber}" target="_blank">
                             <th:block th:text="${activeObject.saleOrderLine.id}" th:if="${activeObject.saleOrderLine}" />
                         </a>
+                    </div>
+                    <div th:if="${saveActionPath ne null}" class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label enterative-form__field-readonly">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="text" th:field="${activeObject.saleOrderLine.id}" />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -143,10 +148,15 @@
                     <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
                         <th:block th:text="#{base.purchaseorderline}" />
                     </div>
-                    <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label enterative-form__field-readonly">
+                    <div th:if="${saveActionPath eq null}" class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label enterative-form__field-readonly">
                         <a th:href="@{/shop/purchaseorder/edit/{id}(id=${activeObject.purchaseOrderNumber})}" th:if="${activeObject.purchaseOrderNumber}" target="_blank">
                             <th:block th:text="${activeObject.purchaseOrderLine.id}" th:if="${activeObject.purchaseOrderLine}" />
                         </a>
+                    </div>
+                    <div th:if="${saveActionPath ne null}" class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label enterative-form__field-readonly">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="text" th:field="${activeObject.purchaseOrderLine.id}" />
+                        </div>
                     </div>
                 </div>
             </div>

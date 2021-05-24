@@ -1,5 +1,9 @@
 package br.com.chart.enterative.ws.controller;
 
+import br.com.chart.enterative.entity.Shop;
+import br.com.chart.enterative.entity.User;
+import br.com.chart.enterative.entity.UserRole;
+import br.com.chart.enterative.entity.vo.PurchaseOrderVO;
 import br.com.chart.enterative.enums.ACTIVATION_STATUS;
 import br.com.chart.enterative.enums.ACTIVATION_TYPE;
 import br.com.chart.enterative.enums.RESPONSE_CODE;
@@ -7,19 +11,25 @@ import br.com.chart.enterative.helper.EnterativeUtils;
 import br.com.chart.enterative.service.activation.LocalActivationService;
 import br.com.chart.enterative.service.activation.RequestValidationService;
 import br.com.chart.enterative.service.base.UserAwareComponent;
+import br.com.chart.enterative.service.crud.*;
 import br.com.chart.enterative.vo.ServiceResponse;
+import br.com.chart.enterative.vo.WSPurchaseInfo;
 import br.com.chart.enterative.vo.WSRequest;
+import br.com.chart.enterative.vo.WSUserInfo;
+import br.com.chart.enterative.ws.config.TokenAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
+import java.util.Objects;
+import java.util.function.Predicate;
 
 /**
  * Expõe servico de Ativacao
  *
  * @author Cristhiano Roberto
- *
  */
 @RestController
 @RequestMapping("/ws")
@@ -30,6 +40,12 @@ public class WSController extends UserAwareComponent {
 
     @Autowired
     private LocalActivationService localActivationService;
+
+    @Autowired
+    private TokenAuthenticationProvider authenticationProvider;
+
+    @Autowired
+    private AccountCRUDService accountService;
 
     @Autowired
     private EnterativeUtils utils;
@@ -46,7 +62,7 @@ public class WSController extends UserAwareComponent {
                 l.setResponse((RESPONSE_CODE) result.get("resposta"));
             });
         } else {
-            request.getLines().stream().forEach(l ->{
+            request.getLines().stream().forEach(l -> {
                 l.setResponse(validationResult);
             });
         }
@@ -59,6 +75,7 @@ public class WSController extends UserAwareComponent {
         try {
             String json = this.utils.toJSON(request);
             this.log("Request: %s", json);
+
         } catch (Exception e) {
             this.log("Request inválido");
         }

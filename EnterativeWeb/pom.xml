@@ -40,6 +40,10 @@
             <version>1.5.0</version>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+        </dependency>
+        <dependency>
             <groupId>br.com.chart.enterative</groupId>
             <artifactId>business</artifactId>
             <version>1.2.0</version>

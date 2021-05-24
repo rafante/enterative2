@@ -104,7 +104,7 @@ public class BHNQueueActivationController extends UserAwareComponent {
     }
 
     //@Scheduled(fixedRate = 15000)
-    @Scheduled(fixedRate = 15 * 60 * 1000 ) // busca desfazimento a cada 15 minutos
+    @Scheduled(fixedRate = 1000 ) // busca desfazimento a cada 15 minutos
     //@Scheduled(fixedRate = 30 *1000)
     //@Scheduled(fixedDelay = 1000) // 1 Segundo para homologação
     public void retrieveReversals() {

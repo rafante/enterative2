@@ -87,6 +87,7 @@ public class BHNActivationProcess extends ActivationProcessService {
                         String endpoint = resource.getUrl();
 
                         BHNResponseContainer resposta = this.requestService.send(request, endpoint);
+
                         String responseCode = resposta.getResponse().getTransaction().getResponseCode();
                         if (null != resposta && Objects.equals(responseCode, "00")) {
                             activeServer = resource.getServer();

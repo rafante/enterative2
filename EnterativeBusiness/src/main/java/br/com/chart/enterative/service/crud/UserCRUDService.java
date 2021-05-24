@@ -54,6 +54,12 @@ public class UserCRUDService extends UserAwareCRUDService<User, Long, UserVO, Us
         return this.dao().findByIdWithFavoriteProductsEager(id);
     }
 
+    public User findByLogin(String login) throws InstantiationException, IllegalAccessException {
+        User userExample = new User();
+        userExample.setLogin(login);
+        return this.findOneOrReturnNull(userExample, new String[]{"login"});
+    }
+
     @Override
     @Transactional(rollbackFor = {CRUDServiceException.class})
     public ServiceResponse processSave(UserVO vo, Long user) throws CRUDServiceException {

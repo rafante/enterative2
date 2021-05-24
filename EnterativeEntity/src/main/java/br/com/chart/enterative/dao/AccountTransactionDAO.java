@@ -43,6 +43,10 @@ public class AccountTransactionDAO extends UserAwareDAO<AccountTransaction, Long
         return this.repository().findBySaleOrderLineAndType(line, type);
     }
 
+    public boolean exists(final Long id) {
+        return this.repository().existsById(id);
+    }
+
     public void setStatusById(ACCOUNT_TRANSACTION_STATUS status, Long id, Date alteredAt, User alteredBy) {
         this.repository().setStatusById(status, id, alteredAt, alteredBy);
     }

@@ -43,6 +43,10 @@ public class AccountTransactionConverterService extends ConverterService<Account
         entity.setCreatedBy(this.reflectionUtils.asHollowLink(User::new, vo.getCreatedBy()));
         entity.setAlteredAt(vo.getAlteredAt());
         entity.setAlteredBy(this.reflectionUtils.asHollowLink(User::new, vo.getAlteredBy()));
+        if (Objects.nonNull(vo.getPurchaseOrderLine()) && Objects.nonNull(vo.getPurchaseOrderLine().getId())) {
+            entity.setPurchaseOrderLine(this.reflectionUtils.asHollowLink(PurchaseOrderLine::new, vo.getPurchaseOrderLine()));
+        }
+        entity.setSaleOrderLine(this.reflectionUtils.asHollowLink(SaleOrderLine::new, vo.getSaleOrderLine()));
         return entity;
     }
 

@@ -22,6 +22,13 @@ function preparaAddModal() {
 	});
 }
 
+function abc() {
+    debugger
+    let url = "@{/cart/conclude}";
+    alert('teste');
+    alert(url);
+}
+
 function listarProdutos(){
 	var imagens = [
 			'Blizzard.png',

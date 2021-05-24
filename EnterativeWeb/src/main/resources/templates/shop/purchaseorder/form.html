@@ -21,9 +21,9 @@
                 <div class="mdl-grid mdl-grid--no-spacing">
                     <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
                         <th:block th:text="#{base.creationdate}" />
-                    </div>                    
+                    </div>
                     <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop">
-                        <div class="mdl-textfield mdl-js-textfield">  
+                        <div class="mdl-textfield mdl-js-textfield">
                             <th:block th:text="${#dates.format(activeObject.createdAt, 'dd/MM/yyyy HH:mm')}" th:if="${activeObject.createdAt}" />
                         </div>
                     </div>
@@ -33,9 +33,9 @@
                 <div class="mdl-grid mdl-grid--no-spacing">
                     <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
                         <th:block th:text="#{base.user}" />
-                    </div>                    
+                    </div>
                     <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop">
-                        <div class="mdl-textfield mdl-js-textfield">  
+                        <div class="mdl-textfield mdl-js-textfield">
                             <th:block th:if="${activeObject.createdBy}" th:text="*{createdBy.name}" />
                         </div>
                     </div>
@@ -45,9 +45,9 @@
                 <div class="mdl-grid mdl-grid--no-spacing">
                     <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
                         <th:block th:text="#{base.shop}" />
-                    </div>                    
+                    </div>
                     <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop">
-                        <div class="mdl-textfield mdl-js-textfield">                            
+                        <div class="mdl-textfield mdl-js-textfield">
                             <select class="mdl-textfield__input" id="tShops" th:field="${activeObject.shop}" sec:authorize="hasRole('ROLE_ADMIN')" th:if="${activeObject.status ne T(br.com.chart.enterative.enums.PURCHASE_ORDER_STATUS).ACTIVE}">
                                 <option value=""></option>
                                 <option th:each="s : ${shop_list}" th:value="${s.id}" th:text="${s.name}"></option>
@@ -61,9 +61,9 @@
                 <div class="mdl-grid mdl-grid--no-spacing">
                     <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
                         <th:block th:text="#{base.account}" />
-                    </div>                    
+                    </div>
                     <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop">
-                        <div class="mdl-textfield mdl-js-textfield">                            
+                        <div class="mdl-textfield mdl-js-textfield">
                             <select class="mdl-textfield__input" id="tAccounts" th:field="${activeObject.account}" sec:authorize="hasRole('ROLE_ADMIN')" th:if="${activeObject.status ne T(br.com.chart.enterative.enums.PURCHASE_ORDER_STATUS).ACTIVE}">
                                 <option value=""></option>
                                 <option th:each="a : ${account_list}" th:value="${a.id}" th:text="${a.name}"></option>
@@ -77,9 +77,9 @@
                 <div class="mdl-grid mdl-grid--no-spacing">
                     <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
                         <th:block th:text="#{purchase.order.activationuser}" />
-                    </div>                    
+                    </div>
                     <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop">
-                        <div class="mdl-textfield mdl-js-textfield">  
+                        <div class="mdl-textfield mdl-js-textfield">
                             <th:block th:if="${activeObject.activatedUser}" th:text="${activeObject.activatedUser.name}" />
                         </div>
                     </div>
@@ -89,9 +89,9 @@
                 <div class="mdl-grid mdl-grid--no-spacing">
                     <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
                         <th:block th:text="#{purchase.order.activationdate}" />
-                    </div>                    
+                    </div>
                     <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop">
-                        <div class="mdl-textfield mdl-js-textfield">  
+                        <div class="mdl-textfield mdl-js-textfield">
                             <th:block th:text="${#dates.format(activeObject.activatedDate, 'dd/MM/yyyy HH:mm')}" th:if="${activeObject.activatedDate}" />
                         </div>
                     </div>
@@ -101,7 +101,7 @@
                 <div class="mdl-grid mdl-grid--no-spacing">
                     <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
                         <th:block th:text="#{purchase.order.totalamount}" />
-                    </div>                    
+                    </div>
                     <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop">
                         <div class="mdl-textfield mdl-js-textfield">
                             <th:block th:if="${activeObject.totalAmount}" th:text="${'R$ ' + #numbers.formatDecimal(activeObject.totalAmount,0,'POINT',2,'COMMA')}" />
@@ -113,7 +113,7 @@
                 <div class="mdl-grid mdl-grid--no-spacing">
                     <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-layout__text--align-center enterative-form__field-label">
                         <th:block th:text="#{purchase.order.status}" />
-                    </div>                    
+                    </div>
                     <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--3-col-tablet mdl-cell--6-col-desktop enterative-form__field-label">
                         <input type="hidden" th:field="${activeObject.status}" />
                         <i id="iPending_" th:attrappend="id=${activeObject.id}" class="material-icons enterative-material-icons mdl-color-text--amber mdl-list__item-secondary-action" th:if="${activeObject.status == T(br.com.chart.enterative.enums.PURCHASE_ORDER_STATUS).PENDING}">alarm</i>
@@ -157,7 +157,7 @@
                     <div class="mdl-cell mdl-cell--1-col-phone mdl-cell--1-col-tablet mdl-cell--1-col-desktop enterative-layout-crudform__subtitle enterative-layout-crudform__grid">
                         <th:block th:text="#{purchase.order.status}" />
                     </div>
-                    <div class="mdl-cell mdl-cell--1-col-phone mdl-cell--1-col-tablet mdl-cell--1-col-desktop enterative-layout-crudform__subtitle enterative-layout-crudform__grid">                    
+                    <div class="mdl-cell mdl-cell--1-col-phone mdl-cell--1-col-tablet mdl-cell--1-col-desktop enterative-layout-crudform__subtitle enterative-layout-crudform__grid">
                     </div>
                     <th:block th:each="line, stat : ${activeObject.lines}">
                         <input type="hidden" th:field="${activeObject.lines[__${stat.index}__].id}" />

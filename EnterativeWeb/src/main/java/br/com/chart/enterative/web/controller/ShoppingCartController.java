@@ -10,6 +10,9 @@ import br.com.chart.enterative.service.crud.SaleOrderCRUDService;
 import br.com.chart.enterative.service.store.ShoppingCartService;
 import br.com.chart.enterative.vo.ServiceResponse;
 import java.util.Objects;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +38,8 @@ public class ShoppingCartController extends BaseWebController {
     private SaleOrderCRUDService saleOrderService;
 
     private final String ERROR_VIEW = "cart/error";
+
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @RequestMapping(path = "cart", method = RequestMethod.GET)
     public ModelAndView cart_get() {
@@ -113,6 +118,7 @@ public class ShoppingCartController extends BaseWebController {
     public ModelAndView cart_conclude_get() {
         ModelAndView mv;
         try {
+            log.info("passou aqui");
             mv = this.createView("cart/conclude");
             ServiceResponse response = this.shoppingCartService.retrieveCart(this.loggedUserId());
             ShoppingCartVO cart = response.get("cart");

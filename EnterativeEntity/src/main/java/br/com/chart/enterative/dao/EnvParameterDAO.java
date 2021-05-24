@@ -55,4 +55,11 @@ public class EnvParameterDAO extends UserAwareDAO<EnvParameter, Long> {
         env.setValue(String.valueOf(value));
         this.saveAndFlush(env, user);
     }
+
+    public void initializeEnvVariables() {
+        //Max units sold by product parameter initializer
+        if(this.get(ENVIRONMENT_PARAMETER.MAX_ITEM_PURCHASE_UNITS) == null){
+            this.set(ENVIRONMENT_PARAMETER.MAX_ITEM_PURCHASE_UNITS,50.0f,get(ENVIRONMENT_PARAMETER.SYSTEM_USER));
+        }
+    }
 }

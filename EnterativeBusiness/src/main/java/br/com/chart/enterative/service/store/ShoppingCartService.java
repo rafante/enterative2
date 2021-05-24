@@ -117,9 +117,12 @@ public class ShoppingCartService extends UserAwareComponent {
     }
 
     public void validateCart(ShoppingCartVO cart) throws CRUDServiceException {
+        int maxItemsQuantityOfProducts = this.parameterDAO.get(ENVIRONMENT_PARAMETER.MAX_ITEM_PURCHASE_UNITS);
         for (ShoppingCartLineVO l : cart.getLines()) {
             if (Objects.equals(l.getProduct().getSendsSMS(), Boolean.TRUE) && StringUtils.isAllBlank(l.getUserCellphone())) {
                 throw new CRUDServiceException(new ServiceResponse().setMessage(String.format("Produto [%s] necessita de número de celular para envio do PIN!", l.getProduct().getName())));
+            }else if(l.getQuantity().floatValue() > maxItemsQuantityOfProducts){
+                throw new CRUDServiceException(new ServiceResponse().setMessage(String.format("Não pode!")));
             }
         }
     }

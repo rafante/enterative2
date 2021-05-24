@@ -16,6 +16,9 @@ import br.com.chart.enterative.entity.SaleOrder;
 import br.com.chart.enterative.entity.SaleOrderLine;
 import br.com.chart.enterative.entity.User;
 import br.com.chart.enterative.entity.vo.AccountTransactionVO;
+import br.com.chart.enterative.entity.vo.PurchaseOrderLineVO;
+import br.com.chart.enterative.entity.vo.PurchaseOrderVO;
+import br.com.chart.enterative.entity.vo.SaleOrderLineVO;
 import br.com.chart.enterative.enums.ACCOUNT_TRANSACTION_STATUS;
 import br.com.chart.enterative.enums.ACCOUNT_TRANSACTION_TYPE;
 import br.com.chart.enterative.enums.CRUD_OPERATION;
@@ -25,7 +28,9 @@ import br.com.chart.enterative.enums.RESPONSE_CODE;
 import br.com.chart.enterative.enums.SALE_ORDER_LINE_STATUS;
 import br.com.chart.enterative.enums.SALE_ORDER_TYPE;
 import br.com.chart.enterative.enums.STATUS;
+import br.com.chart.enterative.exception.CRUDServiceException;
 import br.com.chart.enterative.helper.EnterativeUtils;
+import br.com.chart.enterative.repository.SaleOrderLineRepository;
 import br.com.chart.enterative.service.base.UserAwareCRUDService;
 import br.com.chart.enterative.vo.PageWrapper;
 import br.com.chart.enterative.vo.ServiceResponse;
@@ -35,17 +40,12 @@ import br.com.chart.enterative.vo.search.AccountTransactionSearchVO;
 import br.com.chart.enterative.vo.search.SalesByProductSearchVO;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -78,6 +78,11 @@ public class AccountTransactionCRUDService extends UserAwareCRUDService<AccountT
     @Autowired
     private AccountTransactionCategoryDAO accountTransactionCategoryDAO;
 
+    @Autowired
+    private SaleOrderLineRepository saleOrderLineRepository;
+
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+
     public AccountTransactionCRUDService(UserAwareDAO<AccountTransaction, Long> dao, ConverterService<AccountTransaction, AccountTransactionVO> converter) {
         super(dao, converter);
     }
@@ -86,6 +91,10 @@ public class AccountTransactionCRUDService extends UserAwareCRUDService<AccountT
     @SuppressWarnings("unchecked")
     public AccountTransactionDAO dao() {
         return (AccountTransactionDAO) super.dao();
+    }
+
+    public boolean exists(final Long id) {
+        return this.dao().exists(id);
     }
 
     // Repository Links
@@ -108,6 +117,27 @@ public class AccountTransactionCRUDService extends UserAwareCRUDService<AccountT
     public void deleteByLastPosition() {
         this.dao().deleteByLastPosition();
     }
+
+    @Override
+    public AccountTransactionVO initVO() {
+        AccountTransactionVO vo = super.initVO();
+        vo.setTransactionDate(new Date());
+        vo.setPurchaseOrderLine(new PurchaseOrderLineVO());
+        vo.setSaleOrderLine(new SaleOrderLineVO());
+        return vo;
+    }
+
+    @Override
+    public ServiceResponse processSave(AccountTransactionVO vo, Long user) throws CRUDServiceException {
+        Long categoryID = this.parameterDAO.get(ENVIRONMENT_PARAMETER.SHOP_TRANSACTION_CATEGORY_COMMISSION);
+        if (Objects.equals(vo.getCategory().getId(), categoryID)) {
+            Optional<SaleOrderLine> line = this.saleOrderLineRepository.findById(vo.getSaleOrderLine().getId());
+            PurchaseOrderVO purchaseOrder = this.shopProductCommissionCRUDService.createCommission(line.get()).get("purchaseOrder");
+            return new ServiceResponse().put("entity", this.converter().convert(this.findByPurchaseOrderLineId(purchaseOrder.getLines().get(0).getId())));
+        }
+        return super.processSave(vo, user);
+    }
+
     // -----------------
 
     public void cancel(AccountTransaction transaction) {
@@ -570,6 +600,7 @@ public class AccountTransactionCRUDService extends UserAwareCRUDService<AccountT
     private ServiceResponse add(Account account, BigDecimal amount, ACCOUNT_TRANSACTION_TYPE type, User user, SaleOrderLine saleLine, PurchaseOrderLine purchaseLine, ACCOUNT_TRANSACTION_STATUS status, AccountTransactionCategory category) {
         String result = null;
         try {
+            log.debug("Criou uma transação");
             AccountTransaction transaction = this.createTransaction(account, amount, type, user, saleLine, purchaseLine, status, category);
             this.dao().saveAndFlush(transaction, user.getId());
         } catch (Exception e) {

@@ -11,6 +11,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 /**
@@ -25,6 +26,16 @@ public class TokenAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
     private UserDAO userDAO;
+
+    public boolean isValidCredentials(String username, String password) {
+        if (Objects.nonNull(username) && Objects.nonNull(password) && !username.isEmpty() && !password.isEmpty()) {
+            User user = this.userDAO.findByLogin(username);
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            String passwordHash = encoder.encode(password);
+            return passwordHash.equals(user.getPassword());
+        }
+        return false;
+    }
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {

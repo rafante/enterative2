@@ -44,11 +44,11 @@ public class AccountTransaction extends UserAwareEntity {
     @Getter @Setter private Date transactionDate;
 
     @ManyToOne
-    @JoinColumn(name = "sale_order_line_id")
+    @JoinColumn(name = "sale_order_line_id",unique = true)
     @Getter @Setter private SaleOrderLine saleOrderLine;
 
     @ManyToOne
-    @JoinColumn(name = "purchase_order_line_id")
+    @JoinColumn(name = "purchase_order_line_id",unique = true)
     @Getter @Setter private PurchaseOrderLine purchaseOrderLine;
 
     @ManyToOne

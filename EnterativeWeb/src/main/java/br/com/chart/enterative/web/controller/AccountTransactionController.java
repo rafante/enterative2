@@ -6,7 +6,6 @@ import br.com.chart.enterative.entity.User;
 import br.com.chart.enterative.entity.vo.AccountTransactionCategoryVO;
 import br.com.chart.enterative.entity.vo.AccountTransactionVO;
 import br.com.chart.enterative.entity.vo.AccountVO;
-import br.com.chart.enterative.entity.vo.PurchaseOrderVO;
 import br.com.chart.enterative.enums.ACCOUNT_TRANSACTION_STATUS;
 import br.com.chart.enterative.enums.ACCOUNT_TRANSACTION_TYPE;
 import br.com.chart.enterative.enums.REPORT_TYPE;
@@ -20,11 +19,6 @@ import br.com.chart.enterative.service.report.AccountTransactionReportService;
 import br.com.chart.enterative.vo.ServiceResponse;
 import br.com.chart.enterative.vo.search.AccountTransactionSearchGroupingVO;
 import br.com.chart.enterative.vo.search.AccountTransactionSearchVO;
-import java.text.ParseException;
-import java.util.*;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -38,8 +32,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
+import java.util.*;
+import java.util.stream.Collectors;
+
 /**
- *
  * @author William Leite
  */
 @Controller
@@ -116,7 +114,7 @@ public class AccountTransactionController extends BaseWebController {
     public ModelAndView account_transaction_save(AccountTransactionVO accountTransactionVO) {
         accountTransactionVO.setTransactionDate(new Date());
         ServiceResponse response = this.transactionService.processSave(accountTransactionVO, this.loggedUserId());
-        return this.createFormView(response, accountTransactionVO);
+        return this.account_transaction_id(((AccountTransactionVO) response.get("entity")).getId());
     }
 
     private ModelAndView createFormView(ServiceResponse response, AccountTransactionVO transaction) {
@@ -148,12 +146,11 @@ public class AccountTransactionController extends BaseWebController {
     public ModelAndView account_transaction_id(@PathVariable("id") Long id) {
         ModelAndView mv = this.createView("account/transaction/form");
 
-        AccountTransaction entity;
         AccountTransactionVO vo;
-        try {
-            entity = this.transactionService.findOne(id);
+        if (this.transactionService.exists(id)) {
+            AccountTransaction entity = this.transactionService.findOne(id);
             vo = this.transactionService.converter().convert(entity);
-        } catch (Exception e) {
+        } else {
             vo = this.deadFileService.findOneVO(id);
         }
 
@@ -161,23 +158,23 @@ public class AccountTransactionController extends BaseWebController {
         mv.addObject("crudHomePath", "account/transaction");
         return mv;
     }
-    
-    
-    @RequestMapping(path = "admin/account/transaction/activate/{id}", method=RequestMethod.GET)
+
+
+    @RequestMapping(path = "admin/account/transaction/activate/{id}", method = RequestMethod.GET)
     public ModelAndView account_transaction_activate(@PathVariable("id") Long id) {
-        AccountTransaction entity = this.transactionService.findOne(id);
-        if (Objects.nonNull(entity)) {
+        if (this.transactionService.exists(id)) {
+            AccountTransaction entity = this.transactionService.findOne(id);
             this.transactionService.activate(entity);
         } else {
             this.deadFileService.activate(id);
         }
         return this.account_transaction_id(id);
     }
-    
-    @RequestMapping(path = "admin/account/transaction/cancel/{id}", method=RequestMethod.GET)
+
+    @RequestMapping(path = "admin/account/transaction/cancel/{id}", method = RequestMethod.GET)
     public ModelAndView account_transaction_cancel(@PathVariable("id") Long id) {
-        AccountTransaction entity = this.transactionService.findOne(id);
-        if (Objects.nonNull(entity)) {
+        if (this.transactionService.exists(id)) {
+            AccountTransaction entity = this.transactionService.findOne(id);
             this.transactionService.cancel(entity);
         } else {
             this.deadFileService.cancel(id);

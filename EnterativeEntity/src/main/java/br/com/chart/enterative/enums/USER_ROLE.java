@@ -9,7 +9,8 @@ public enum USER_ROLE {
     ROLE_FAST_ACTIVATION("ROLE_FAST_ACTIVATION", "FAST_ACTIVATION", "Fluxo Ativação Rápido"),
     ROLE_SHOP_ADMIN("ROLE_SHOP_ADMIN", "SHOP_ADMIN", "Administrador da Loja"),
     ROLE_PARTNER_CUSTOMER("ROLE_PARTNER_CUSTOMER", "PARTNER_CUSTOMER", "Consumidor vinculado a Parceiro"),
-    ROLE_CHART_SUPPORT("ROLE_CHART_SUPPORT", "CHART_SUPPORT", "Suporte Chart");
+    ROLE_CHART_SUPPORT("ROLE_CHART_SUPPORT", "CHART_SUPPORT", "Suporte Chart"),
+    ROLE_PAYGO_INTEGRATOR("ROLE_PAYGO_INTEGRATOR", "PAYGO_INTEGRATOR", "Api de Integração com a PayGo");
 
     private final String fullRole;
     private final String role;
